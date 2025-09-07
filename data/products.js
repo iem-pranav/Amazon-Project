@@ -66,10 +66,10 @@ export function loadProductsFetch() {
         return new Clothing(productDetails);
       }
       return new Product(productDetails);
-    }).catch((error) => {
-      console.log('Unexcepted error. Please try again later');
     });
-  })
+  }).catch((error) => {
+      console.log('Unexcepted error. Please try again later');
+    })
 
   return promise;
 }

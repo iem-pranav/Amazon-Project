@@ -1,10 +1,10 @@
-import {formatCurrency} from "../scripts/utils/money.js";
+import { formatCurrency } from "../scripts/utils/money.js";
 
-export function getProduct(productId){
+export function getProduct(productId) {
   let matchingProduct;
 
   products.forEach((product) => {
-    if(product.id === productId){
+    if (product.id === productId) {
       matchingProduct = product;
     }
   });
@@ -28,22 +28,22 @@ class Product {
   }
 
   getStarsUrl() {
-    return `images/ratings/rating-${this.rating.stars*10}.png`;
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
   }
 
   getPrice() {
-    return `$${formatCurrency(this.priceCents)}`
+    return `$${formatCurrency(this.priceCents)}`;
   }
 
   extraInfoHTML() {
-    return '';
+    return "";
   }
 }
 
-class Clothing extends Product{
+class Clothing extends Product {
   sizeChartLink;
 
-  constructor(productDetails){
+  constructor(productDetails) {
     super(productDetails);
     this.sizeChartLink = productDetails.sizeChartLink;
   }
@@ -55,6 +55,27 @@ class Clothing extends Product{
   }
 }
 
+export let products = [];
+
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener("load", () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === "clothing") {
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    });
+
+    fun();
+  });
+
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send();
+}
+
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -720,3 +741,4 @@ export const products = [
   }
   return new Product(productDetails);
 });
+*/

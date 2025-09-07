@@ -66,14 +66,13 @@ export function loadProductsFetch() {
         return new Clothing(productDetails);
       }
       return new Product(productDetails);
+    }).catch((error) => {
+      console.log('Unexcepted error. Please try again later');
     });
   })
 
   return promise;
 }
-// loadProductsFetch().then(() => {
-
-// });
 
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
@@ -87,6 +86,10 @@ export function loadProducts(fun) {
     });
 
     fun();
+  });
+
+  xhr.addEventListener('error' , (error) => {
+    console.log('Unexcepted error. Please try again later');
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");
